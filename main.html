@@ -7,18 +7,19 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <div id="app">{{ message + 5 }}</div>
-    <button @click="increment">count is: {{ count }}</button>
+    <div id="app">
+        {{ message + 5 }}
+    </div>
     <script>
-    const { createApp, ref } = Vue
+    const { createApp, ref, reactive} = Vue
 
     const app = createApp({
         setup() {
             const message = ref('Hello vue!')
-            const count = 0
+            const count = 1
             return {
                 message,
-                count: 0
+                count
             }
         }
     });
@@ -27,8 +28,82 @@
     </script>
 
 
+    <div id="add_count">
+        <button @click="increment">count is: {{ count }}</button>
+    </div>
     
-    
-    <img src="./question1.jpg" alt="question1" srcset="./question1.jpg 960w">
+    <script>
+
+    const count_app = createApp({
+        setup(){
+            const count = ref(2);
+            function increment(){
+                return count.value++;
+            }
+            return {
+                count,
+                increment
+            }
+        },
+
+        
+    });
+
+    count_app.mount('#add_count');
+
+    </script>
+
+    <div id="questions">
+
+        <div id="question1">
+            <img src="./question1.jpg" alt="question1" srcset="./question1.jpg 960w">
+            <div id="qestion1_input">
+                <input v-model="question1_answer" placeholder="答えを入力">
+                <button @click="check_correct(question1_answer,'1')">送信！</button>
+                <h5 v-if="question_status[0]">answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+            
+        <div v-if="question_status[0]" id="question2">
+
+            <img src="./question2.png" alt="question1" srcset="./question2.png 960w">
+            <div id="qestion2_input">
+                <input v-model="question2_answer" placeholder="答えを入力">
+                <button @click="check_correct(question2_answer,'2')">送信！</button>
+                <h5 v-if="question_status[1]">answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+
+    </div>
+    <script>
+
+        const question_app = createApp({
+            setup(){
+                const question1_answer = ref("");
+                const question2_answer = ref("");
+                const question_status = reactive((new Array(5)).fill(false));
+                const correct_answers = ["いご","しかく"]
+
+                function check_correct(answer,number) {
+                    array_index = number - 1;
+                    const answer_check = (answer == correct_answers[array_index])
+                    question_status[array_index] = answer_check;
+                    console.log(question_status)
+                }
+
+                return {
+                    question1_answer,
+                    question2_answer,
+                    question_status,
+                    check_correct
+                }
+            }
+        })
+
+        question_app.mount("#questions");
+
+    </script>
 </body>
 </html>

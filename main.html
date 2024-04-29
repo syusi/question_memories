@@ -53,14 +53,28 @@
 
     </script>
 
+
     <div id="questions">
+        <div v-for="n in 5">
+            <p :id=`p${n}`>number:{{ n }}</p>
+            <img :id=`question${n}_image` :src=`./question${n}.png` :alt=`question${n}` :srcset="`./question${n}.png 960w`">
+            <div :id=`qestion${n}_input`>
+                <input :v-model=`question_answer[${n-1}]` placeholder="答えを入力">
+                <button @click=`check_correct(question_answer[${n-1}],${n})`>送信！</button>
+                <h5 v-if=`question_status[${n-1}]`>answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+
+
+        </div>
+
 
         <div id="question1">
-            <img src="./question1.jpg" alt="question1" srcset="./question1.jpg 960w">
+            <img id="question1_image" src="./question1.jpg" alt="question1" srcset="./question1.jpg 960w">
             <div id="qestion1_input">
-                <input v-model="question1_answer" placeholder="答えを入力">
-                <button @click="check_correct(question1_answer,'1')">送信！</button>
-                <h5 v-if="question_status[0]">answer correct!!</h5>
+                <input id="question_input" v-model="question_answer[0]" placeholder="答えを入力">
+                <button id="question_button" @click="check_correct(question_answer[0],'1')">送信！</button>
+                <h5 id="question_h5" v-if="question_status[0]">answer correct!!</h5>
                 <h5 v-else>answer incorrect...</h5>
             </div>
         </div>
@@ -69,7 +83,7 @@
 
             <img src="./question2.png" alt="question1" srcset="./question2.png 960w">
             <div id="qestion2_input">
-                <input v-model="question2_answer" placeholder="答えを入力">
+                <input v-model="question_answer[1]" placeholder="答えを入力">
                 <button @click="check_correct(question2_answer,'2')">送信！</button>
                 <h5 v-if="question_status[1]">answer correct!!</h5>
                 <h5 v-else>answer incorrect...</h5>
@@ -79,12 +93,12 @@
     </div>
     <script>
 
+
         const question_app = createApp({
             setup(){
-                const question1_answer = ref("");
-                const question2_answer = ref("");
+                const question_answer = reactive(new Array(5).fill(""));
                 const question_status = reactive((new Array(5)).fill(false));
-                const correct_answers = ["いご","しかく"]
+                const correct_answers = ["いご","しかく",""]
 
                 function check_correct(answer,number) {
                     array_index = number - 1;
@@ -94,10 +108,9 @@
                 }
 
                 return {
-                    question1_answer,
-                    question2_answer,
+                    question_answer,
                     question_status,
-                    check_correct
+                    check_correct,
                 }
             }
         })

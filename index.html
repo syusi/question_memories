@@ -121,7 +121,10 @@
                 const change_content = ref(false);
 
                 function question_form(input) {
-                    game_start.value=(input=='わかった');
+                    if (game_start.value == false) {
+                        game_start.value=(input=='わかった');
+                        return;
+                    }
 
                     if (input.includes('赤') && input.includes('紙') && input.includes('裏')) {
                         reverse_paper.value = true;

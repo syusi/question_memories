@@ -7,103 +7,108 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-    <div id="app">
-        {{ message + 5 }}
-    </div>
-    <script>
-    const { createApp, ref, reactive} = Vue
-
-    const app = createApp({
-        setup() {
-            const message = ref('Hello vue!')
-            const count = 1
-            return {
-                message,
-                count
-            }
-        }
-    });
-
-    app.mount('#app')
-    </script>
-
-
-    <div id="add_count">
-        <button @click="increment">count is: {{ count }}</button>
-    </div>
-    
-    <script>
-
-    const count_app = createApp({
-        setup(){
-            const count = ref(2);
-            function increment(){
-                return count.value++;
-            }
-            return {
-                count,
-                increment
-            }
-        },
-
-        
-    });
-
-    count_app.mount('#add_count');
-
-    </script>
 
 
     <div id="questions">
-        <div v-for="n in 5">
-            <p :id=`p${n}`>number:{{ n }}</p>
-            <img :id=`question${n}_image` :src=`./question${n}.png` :alt=`question${n}` :srcset="`./question${n}.png 960w`">
-            <div :id=`qestion${n}_input`>
-                <input :v-model=`question_answer[${n-1}]` placeholder="答えを入力">
-                <button @click=`check_correct(question_answer[${n-1}],${n})`>送信！</button>
-                <h5 v-if=`question_status[${n-1}]`>answer correct!!</h5>
-                <h5 v-else>answer incorrect...</h5>
+        <!-- <div v-for="n in 5" id="rooper" :key="n">
+            <div :id=`question${n}`>
+
+                <p :id=`p${n}`>number:{{ n }}</p>
+                <img :id=`question${n}_image` :src=`./question${n}.png` :alt=`question${n}` :srcset="`./question${n}.png 960w`">
+                <div :id=`qestion${n}_input`>
+                    <input :v-model=`question_answer[${n-1}]` placeholder="答えを入力">
+                    <button @click="check_correct(question_answer[1],1)">送信！</button>
+                    <h5 v-if="`question_status[${n-1}]`">answer correct!!</h5>
+                    <h5 v-else>answer incorrect...</h5>
+                </div>
             </div>
 
 
-        </div>
+        </div> -->
 
 
         <div id="question1">
-            <img id="question1_image" src="./question1.jpg" alt="question1" srcset="./question1.jpg 960w">
+            <img id="question1_image" src="./question1.png" alt="question1" srcset="./question1.png 960w">
             <div id="qestion1_input">
-                <input id="question_input" v-model="question_answer[0]" placeholder="答えを入力">
-                <button id="question_button" @click="check_correct(question_answer[0],'1')">送信！</button>
-                <h5 id="question_h5" v-if="question_status[0]">answer correct!!</h5>
+                <input id="question_input" v-model="question_answer[1]" placeholder="答えを入力">
+                <button id="question_button" @click="check_correct(question_answer[1],'1')">送信！</button>
+                <h5 id="question_h5" v-if="question_status[1]">answer correct!!</h5>
                 <h5 v-else>answer incorrect...</h5>
             </div>
         </div>
             
-        <div v-if="question_status[0]" id="question2">
+        <div v-if="question_status[1]" id="question2">
 
             <img src="./question2.png" alt="question1" srcset="./question2.png 960w">
             <div id="qestion2_input">
-                <input v-model="question_answer[1]" placeholder="答えを入力">
-                <button @click="check_correct(question2_answer,'2')">送信！</button>
-                <h5 v-if="question_status[1]">answer correct!!</h5>
+                <input v-model="question_answer[2]" placeholder="答えを入力">
+                <button @click="check_correct(question_answer[2],'2')">送信！</button>
+                <h5 v-if="question_status[2]">answer correct!!</h5>
                 <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+
+        <div v-if="question_status[2]" id="question3">
+
+            <img src="./question3.png" alt="question3" srcset="./question3.png 960w">
+            <div id="qestion3_input">
+                <input v-model="question_answer[3]" placeholder="答えを入力">
+                <button @click="check_correct(question_answer[3],'3')">送信！</button>
+                <h5 v-if="question_status[3]">answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+
+        <div v-if="question_status[3]" id="question4">
+
+            <img src="./question4.png" alt="question4" srcset="./question4.png 960w">
+            <div id="qestion4_input">
+                <input v-model="question_answer[4]" placeholder="答えを入力">
+                <button @click="check_correct(question_answer[4],'4')">送信！</button>
+                <h5 v-if="question_status[4]">answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+
+        <div v-if="question_status[4]" id="question5">
+
+            <img src="./question5.png" alt="question5" srcset="./question5.png 960w">
+            <div id="qestion5_input">
+                <input v-model="question_answer[5]" placeholder="答えを入力">
+                <button @click="check_correct(question_answer[5],'5')">送信！</button>
+                <h5 v-if="question_status[5]">answer correct!!</h5>
+                <h5 v-else>answer incorrect...</h5>
+            </div>
+        </div>
+
+        <div v-if="question_status[5]" id="questionfinal">
+
+            <img src="./questionfinal.png" alt="questionfinal" srcset="./questionfinal.png 960w">
+            <div id="qestionfinal_input">
+                <input v-model="question_final" placeholder="答えを入力">
+                <button @click="check_correct(question_answer[2],'2')">送信！</button>
             </div>
         </div>
 
     </div>
     <script>
-
+        const { createApp, ref, reactive} = Vue
 
         const question_app = createApp({
             setup(){
-                const question_answer = reactive(new Array(5).fill(""));
-                const question_status = reactive((new Array(5)).fill(false));
-                const correct_answers = ["いご","しかく",""]
+                const game_start = ref(false);
+                //問題番号とindexを合わせるため、index0は空にする。
+                const question_answer = reactive(new Array(6).fill(""));
+                const question_status = reactive((new Array(6)).fill(false));
+                const correct_answers = ["","いご","しかく","おしろ","におい","ろうそく"]
 
                 function check_correct(answer,number) {
-                    array_index = number - 1;
-                    const answer_check = (answer == correct_answers[array_index])
-                    question_status[array_index] = answer_check;
+                    //既に正解済みならそのまま
+                    if (question_status[number]==true) {
+                        return;
+                    }
+                    const answer_check = (answer == correct_answers[number])
+                    question_status[number] = answer_check;
                     console.log(question_status)
                 }
 

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{ message + 5 }}
+    </div>
+    <script>
+    const { createApp, ref, reactive} = Vue
+
+    const app = createApp({
+        setup() {
+            const message = ref('Hello vue!')
+            const count = 1
+            return {
+                message,
+                count
+            }
+        }
+    });
+
+    app.mount('#app')
+    </script>
+
+
+    <div id="add_count">
+        <button @click="increment">count is: {{ count }}</button>
+    </div>
+    
+    <script>
+
+    const count_app = createApp({
+        setup(){
+            const count = ref(2);
+            function increment(){
+                return count.value++;
+            }
+            return {
+                count,
+                increment
+            }
+        },
+
+        
+    });
+
+    count_app.mount('#add_count');
+
+    </script>
+</body>
+</html>

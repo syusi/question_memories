@@ -3,13 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>タイトル</title>
+    <title>memories</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
-
-
+    
     <div id="questions">
+
+        <img id="story_image" src="./story.png" alt="question1" srcset="./story.png 960w">
+        <img v-if="reverse_paper && change_content==false" src="./reverse_red.png" alt="reverse_red" srcset="./reverse_red.png 960w">
+        <img v-if="reverse_paper && change_content" src="./reverse_red2.png" alt="reverse_red2" srcset="./reverse_red2.png 960w">
+        謎解きゲーム「memories」へようこそ
+        以下の注意点を読んで、準備が良ければ「ルールはわかりましたか」のフォームに「わかった」と入力し送信を押してください
+        
+        <ul>
+            <li>こたえはひらがなで入力してください</li>
+            <li>入力後、送信ボタンを押してください。正誤判定を行います</li>
+            <li>質問があれば、「ルールはわかりましたか」のフォームに質問を入力してください。</li>
+        </ul>
+        ルールはわかりましたか？
+        <input id="question_input" v-model="question_answer[0]" placeholder="答えを入力">
+        <button id="question_button" @click="question_form(question_answer[0])">送信！</button>
+
         <!-- <div v-for="n in 5" id="rooper" :key="n">
             <div :id=`question${n}`>
 
@@ -27,7 +42,7 @@
         </div> -->
 
 
-        <div id="question1">
+        <div v-if="game_start" id="question1">
             <img id="question1_image" src="./question1.png" alt="question1" srcset="./question1.png 960w">
             <div id="qestion1_input">
                 <input id="question_input" v-model="question_answer[1]" placeholder="答えを入力">
@@ -85,8 +100,8 @@
 
             <img src="./questionfinal.png" alt="questionfinal" srcset="./questionfinal.png 960w">
             <div id="qestionfinal_input">
-                <input v-model="question_final" placeholder="答えを入力">
-                <button @click="check_correct(question_answer[2],'2')">送信！</button>
+                <input v-model="final_answer" placeholder="答えを入力">
+                <button @click="check_final_answer">送信！</button>
             </div>
         </div>
 
@@ -101,6 +116,19 @@
                 const question_answer = reactive(new Array(6).fill(""));
                 const question_status = reactive((new Array(6)).fill(false));
                 const correct_answers = ["","いご","しかく","おしろ","におい","ろうそく"]
+                const final_answer = ref("");
+                const reverse_paper = ref(false);
+                const change_content = ref(false);
+
+                function question_form(input) {
+                    game_start.value=(input=='わかった');
+
+                    if (input.includes('赤') && input.includes('紙') && input.includes('裏')) {
+                        reverse_paper.value = true;
+                    }else{
+                        window.alert('ヒントは未実装です');
+                    }
+                }
 
                 function check_correct(answer,number) {
                     //既に正解済みならそのまま
@@ -112,10 +140,43 @@
                     console.log(question_status)
                 }
 
+                function check_final_answer() {
+                    
+                    let result = confirm(`さいごの答えは「${final_answer.value}」で本当に良いですか？`);
+                    
+                    if (result == true) {
+                        if (final_answer.value=="きおく" || final_answer.value=="めもりある" ) {
+                            if (final_answer.value=="めもりある") {
+                                window.open('./true_ending.html','_blank');
+                            }else{
+                                //きおくの場合
+                                if (reverse_paper.value==false) {
+                                    window.open('./ending.html','_blank');
+                                }else if(reverse_paper.value==true && change_content.value==false){
+                                    window.alert("紙の裏側の文字が変化したようだ");
+                                    change_content.value=true;
+                                }else{
+                                    window.open('./ending.html','_blank');
+                                }
+                            }
+                        }else{
+                            window.open('./ending_false.html','_blank');
+                        }
+
+                    }
+
+                }
+
                 return {
+                    game_start,
                     question_answer,
                     question_status,
                     check_correct,
+                    final_answer,
+                    reverse_paper,
+                    check_final_answer,
+                    change_content,
+                    question_form,
                 }
             }
         })

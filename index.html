@@ -25,24 +25,24 @@
         <input id="question_input" v-model="question_answer[0]" placeholder="答えを入力">
         <button id="question_button" @click="question_form(question_answer[0])">送信！</button>
 
-        <!-- <div v-for="n in 5" id="rooper" :key="n">
-            <div :id=`question${n}`>
+        <div v-for="n in 5" :key="n">
+            <div v-if=question_status[(n-1)] :id=`question${n}`>
 
                 <p :id=`p${n}`>number:{{ n }}</p>
                 <img :id=`question${n}_image` :src=`./question${n}.png` :alt=`question${n}` :srcset="`./question${n}.png 960w`">
                 <div :id=`qestion${n}_input`>
-                    <input :v-model=`question_answer[${n-1}]` placeholder="答えを入力">
-                    <button @click="check_correct(question_answer[1],1)">送信！</button>
-                    <h5 v-if="`question_status[${n-1}]`">answer correct!!</h5>
+                    <input v-model=question_answer[n] placeholder="答えを入力">
+                    <button @click=check_correct(question_answer[n],n)>送信！</button>
+                    <h5 v-if=question_status[n]>answer correct!!</h5>
                     <h5 v-else>answer incorrect...</h5>
                 </div>
             </div>
 
 
-        </div> -->
+        </div>
 
 
-        <div v-if="game_start" id="question1">
+        <!-- <div v-if="game_start" id="question1">
             <img id="question1_image" src="./question1.png" alt="question1" srcset="./question1.png 960w">
             <div id="qestion1_input">
                 <input id="question_input" v-model="question_answer[1]" placeholder="答えを入力">
@@ -94,7 +94,7 @@
                 <h5 v-if="question_status[5]">answer correct!!</h5>
                 <h5 v-else>answer incorrect...</h5>
             </div>
-        </div>
+        </div> -->
 
         <div v-if="question_status[5]" id="questionfinal">
 
@@ -111,18 +111,18 @@
 
         const question_app = createApp({
             setup(){
-                const game_start = ref(false);
                 //問題番号とindexを合わせるため、index0は空にする。
                 const question_answer = reactive(new Array(6).fill(""));
-                const question_status = reactive((new Array(6)).fill(false));
+                //index0はゲームスタート
+                const question_status = reactive(new Array(6).fill(false));
                 const correct_answers = ["","いご","しかく","おしろ","におい","ろうそく"]
                 const final_answer = ref("");
                 const reverse_paper = ref(false);
                 const change_content = ref(false);
 
                 function question_form(input) {
-                    if (game_start.value == false) {
-                        game_start.value=(input=='わかった');
+                    if (question_status[0] == false) {
+                        question_status[0]=(input=='わかった');
                         return;
                     }
 
@@ -138,6 +138,7 @@
                     if (question_status[number]==true) {
                         return;
                     }
+                    question_answer;
                     const answer_check = (answer == correct_answers[number])
                     question_status[number] = answer_check;
                     console.log(question_status)
@@ -172,7 +173,6 @@
                 }
 
                 return {
-                    game_start,
                     question_answer,
                     question_status,
                     check_correct,
